@@ -1,6 +1,7 @@
 import cloud.commandframework.flags.AbstractFlag
 import cloud.commandframework.flags.FlagContainer
 import cloud.commandframework.flags.GlobalFlagContainer
+import cloud.commandframework.flags.types.IntegerFlag
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -18,7 +19,7 @@ class FlagTest {
 
     @Test
     fun `test get flag from class`() {
-        assert(GlobalFlagContainer[TestFlag::class] != null)
+        GlobalFlagContainer[TestFlag::class]
     }
 
     @Test
@@ -48,6 +49,16 @@ class FlagTest {
         }
         throw AssertionError("Flag is unknown and should have thrown...")
     }
+
+    @Test
+    fun `test flag extending standard flag type and then test removal`() {
+        GlobalFlagContainer += NumericalFlag(10)
+        val container = FlagContainer(GlobalFlagContainer)
+        container += GlobalFlagContainer[NumericalFlag::class].parse("420")
+        assert(container[NumericalFlag::class].value == 420)
+        container -= container[NumericalFlag::class]
+        assert(container[NumericalFlag::class].value == 10)
+    }
 }
 
 class TestFlag(value: String) : AbstractFlag<String, TestFlag>(value) {
@@ -70,4 +81,10 @@ class AnotherFlag(value: String) : AbstractFlag<String, TestFlag>(value) {
     override fun example() = ""
 
     override fun flagOf(value: String) = TestFlag(value)
+}
+
+class NumericalFlag(value: Int) : IntegerFlag<NumericalFlag>(value) {
+
+    override fun flagOf(value: Int) = NumericalFlag(value)
+
 }

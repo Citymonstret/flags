@@ -24,6 +24,7 @@
 
 package cloud.commandframework.flags
 
+import java.lang.IllegalStateException
 import kotlin.reflect.KClass
 
 /**
@@ -64,14 +65,14 @@ open class FlagContainer(var parentContainer: FlagContainer?) {
      * @param T Flag type
      * @return Flag instance
      */
-    open operator fun <V, T : AbstractFlag<out V, *>> get(flagClass: KClass<T>): T? {
+    open operator fun <V, T : AbstractFlag<out V, *>> get(flagClass: KClass<T>): T {
         val flag = this._flagMap[flagClass]
         if (flag != null) {
             return flag as T
         } else if (this.parentContainer != null) {
             return this.parentContainer!![flagClass]
         } else {
-            return null
+            throw IllegalStateException("Could not find flag of type '${flagClass.simpleName}'")
         }
     }
 

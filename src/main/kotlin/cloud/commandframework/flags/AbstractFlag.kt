@@ -26,11 +26,11 @@ package cloud.commandframework.flags
 
 /**
  * A flag is any property that can be assigned to an object, that will later alter its functionality
- * in some way
+ * in some way.
  *
- * @param T Value type
- * @param F The flag type itself
- * @param value The flag value
+ * @param T Value type.
+ * @param F The flag type itself.
+ * @param value The flag value.
  */
 abstract class AbstractFlag<T : Any, out F : AbstractFlag<T, F>>
     protected constructor(val value: T) {
@@ -70,7 +70,14 @@ abstract class AbstractFlag<T : Any, out F : AbstractFlag<T, F>>
         return result
     }
 
-    override fun toString() = this.name
+    /**
+     * Serialize the flag value.
+     *
+     * @return Flag value in a format that would parse an identical flag instance.
+     */
+    abstract fun serialize(): String
+
+    override fun toString() = serialize()
 
     /**
      * Parse the string [input] into a flag, and throw an exception in the case that the string does
@@ -88,7 +95,7 @@ abstract class AbstractFlag<T : Any, out F : AbstractFlag<T, F>>
      * merged values.
      *
      * @param input The value to add.
-     * @return Flag containing the values,
+     * @return Flag containing the values.
      */
     abstract fun merge(input: T): F
 
@@ -102,14 +109,14 @@ abstract class AbstractFlag<T : Any, out F : AbstractFlag<T, F>>
     /**
      * Create a new flag instance with the given [value]
      *
-     * @param value Flag value
+     * @param value Flag value.
      */
     protected abstract fun flagOf(value: T): F
 
     /**
-     * Create a new flag instance with the given [value]
+     * Create a new flag instance with the given [value].
      *
-     * @param value Flag value
+     * @param value Flag value.
      */
     fun createFlagInstance(value: T) = flagOf(value)
 }

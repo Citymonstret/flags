@@ -39,7 +39,7 @@ object GlobalFlagContainer : FlagContainer(null) {
         }
     }
 
-    override operator fun <V, T : AbstractFlag<out V, *>> get(flagClass: KClass<T>): T? {
+    override operator fun <V, T : AbstractFlag<out V, *>> get(flagClass: KClass<T>): T {
         val flag = super.get(flagClass)
         if (flag != null) {
             return flag
