@@ -35,14 +35,13 @@ import kotlin.reflect.KClass
  * parent container, and can set this parameter to null. If this is not a top level flag container,
  * the parent should never be null.
  */
-open class FlagContainer(var parentContainer: FlagContainer?) {
+open class FlagContainer(var parentContainer: FlagContainer?) : FlagHolder {
 
-    private val _unknownFlags = mutableMapOf<String, String>()
     private val _flagMap = mutableMapOf<KClass<*>, AbstractFlag<*, *>>()
     private val _updateSubscribers = mutableListOf<(AbstractFlag<*, *>, FlagUpdateType) -> Unit>()
 
     /** All flags stored in this container. */
-    val flagMap: Map<KClass<*>, AbstractFlag<*, *>>
+    override val flagMap: Map<KClass<*>, AbstractFlag<*, *>>
         get() = this._flagMap.toMap()
 
     /** The container highest up in the parent hierarchy. */
@@ -53,7 +52,7 @@ open class FlagContainer(var parentContainer: FlagContainer?) {
      * All flags recognized by this flag container. This will by default use the flags known by the
      * highest container in the container hierarchy.
      */
-    val recognizedFlags: Collection<AbstractFlag<*, *>>
+    override val recognizedFlags: Collection<AbstractFlag<*, *>>
         get() = this.highestFlagContainer.flagMap.values
 
     /**
@@ -65,7 +64,7 @@ open class FlagContainer(var parentContainer: FlagContainer?) {
      * @param T Flag type
      * @return Flag instance
      */
-    open operator fun <V, T : AbstractFlag<out V, *>> get(flagClass: KClass<T>): T {
+    override operator fun <V, T : AbstractFlag<out V, *>> get(flagClass: KClass<T>): T {
         val flag = this._flagMap[flagClass]
         if (flag != null) {
             return flag as T
@@ -151,7 +150,7 @@ open class FlagContainer(var parentContainer: FlagContainer?) {
      * @param T Flag type.
      * @return The flag instance if it exists, else null.
      */
-    fun <V, T : AbstractFlag<out V, *>> queryLocal(flagClass: KClass<T>): T? {
+    override fun <V, T : AbstractFlag<out V, *>> queryLocal(flagClass: KClass<T>): T? {
         return this._flagMap[flagClass] as? T
     }
 
@@ -160,7 +159,7 @@ open class FlagContainer(var parentContainer: FlagContainer?) {
      *
      * @param flagClass The flag class.
      */
-    open fun getFlagErased(flagClass: KClass<*>): AbstractFlag<*, *>? {
+    override fun getFlagErased(flagClass: KClass<*>): AbstractFlag<*, *>? {
         val flag = this._flagMap[flagClass]
         if (flag != null) {
             return flag
