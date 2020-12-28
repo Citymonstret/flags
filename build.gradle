@@ -1,0 +1,32 @@
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "1.4.21"
+}
+
+group "cloud.commandframework"
+version "1.0.0-SNAPSHOT"
+
+apply plugin: "org.jetbrains.kotlin.jvm"
+apply plugin: "idea"
+
+def javaVersion = JavaVersion.VERSION_1_8
+compileKotlin {
+    kotlinOptions.jvmTarget = javaVersion.toString()
+}
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    useJUnitPlatform()
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.21"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.21"
+
+    testImplementation "org.junit.jupiter:junit-jupiter"
+    testImplementation platform("org.junit:junit-bom:5.7.0")
+}
+
+
