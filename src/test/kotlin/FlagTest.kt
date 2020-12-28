@@ -24,7 +24,7 @@ class FlagTest {
 
     @Test
     fun `test get flag value`() {
-        assert(GlobalFlagContainer[TestFlag::class]?.value == "default")
+        assert(GlobalFlagContainer[TestFlag::class].value == "default")
     }
 
     @Test
@@ -70,6 +70,8 @@ class TestFlag(value: String) : AbstractFlag<String, TestFlag>(value) {
     override fun example() = ""
 
     override fun flagOf(value: String) = TestFlag(value)
+
+    override fun serialize() = value
 }
 
 class AnotherFlag(value: String) : AbstractFlag<String, TestFlag>(value) {
@@ -81,6 +83,8 @@ class AnotherFlag(value: String) : AbstractFlag<String, TestFlag>(value) {
     override fun example() = ""
 
     override fun flagOf(value: String) = TestFlag(value)
+
+    override fun serialize() = value
 }
 
 class NumericalFlag(value: Int) : IntegerFlag<NumericalFlag>(value) {

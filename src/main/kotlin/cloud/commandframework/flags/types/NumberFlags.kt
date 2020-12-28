@@ -48,6 +48,8 @@ abstract class IntegerFlag<out F : IntegerFlag<F>>(number: Int) : AbstractFlag<I
     override fun example() = "10"
 
     override fun toString() = value.toString()
+
+    override fun serialize() = toString()
 }
 
 /**
@@ -71,4 +73,6 @@ abstract class DoubleFlag<out F : DoubleFlag<F>>(number: Double) : AbstractFlag<
     override fun example() = "10.0"
 
     override fun toString() = value.toString()
+
+    override fun serialize() = toString()
 }
