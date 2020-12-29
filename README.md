@@ -13,6 +13,6 @@ Snapshot builds can be retrieved from Sonatype OSS Snapshots and release builds 
 <dependency>
   <groupId>cloud.commandframework</groupId>
   <artifactId>flags</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
 </dependency>
 ```
