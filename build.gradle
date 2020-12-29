@@ -17,6 +17,7 @@ plugins {
 
 group "cloud.commandframework"
 version "1.0.0"
+description "Type safe serializable properties"
 
 apply plugin: "org.jetbrains.kotlin.jvm"
 apply plugin: "idea"
